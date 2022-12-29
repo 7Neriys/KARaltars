@@ -34,7 +34,7 @@ public class AltarCommand extends AbstractCommand{
                 return;
             }
             if(args.length==1){
-                sender.sendMessage(label + " " + args[0] + "<name>");
+                sender.sendMessage(label + " " + args[0] + " <name>");
                 return;
             }
             KARaltars.getData().getConfig().set("altars.", args[1]);
@@ -43,6 +43,27 @@ public class AltarCommand extends AbstractCommand{
             return;
 
         }
+        if(Objects.equals(args[0], "addblock")){
+            if(!sender.hasPermission("KARaltars.addblock")){
+                sender.sendMessage(ChatColor.RED + "you don't have permissions");
+                return;
+            }
+            if(args.length==1){
+                sender.sendMessage(label + " " + args[0] + " <altar name> <block name> <x> <y> <z>");
+                return;
+            }
+            if(args.length==2){
+                sender.sendMessage(label + " " + args[0] + args[1] + " <block name> <x> <y> <z>");
+                return;
+            }
+            KARaltars.getData().getConfig().set("altars."+ args[1] + ".block", args[2]);
+            KARaltars.getData().getConfig().set("altars."+ args[1] + ".coord", args[3] + ", " + args[4] + ", " + args[5]);
+            KARaltars.getData().save();
+            sender.sendMessage("Block " + args[2] + "for altar"+ args[1] + " created");
+            return;
+
+        }
+
 
 
 
