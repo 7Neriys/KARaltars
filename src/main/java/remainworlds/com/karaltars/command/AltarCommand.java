@@ -37,7 +37,7 @@ public class AltarCommand extends AbstractCommand{
                 sender.sendMessage(label + " " + args[0] + " <name>");
                 return;
             }
-            KARaltars.getData().getConfig().set("altars.", args[1]);
+            KARaltars.getData().getConfig().set("altars." + args[1], "empty");
             KARaltars.getData().save();
             sender.sendMessage("Altar " + args[1] + " created");
             return;
