@@ -4,6 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import remainworlds.com.karaltars.KARaltars;
 
+import java.util.Objects;
+
 public class AltarCommand extends AbstractCommand{
 
     public AltarCommand(){
@@ -15,7 +17,7 @@ public class AltarCommand extends AbstractCommand{
             sender.sendMessage("Reload: /" + label + " reload");
             return;
         }
-        if(args[0]=="reload"){
+        if(Objects.equals(args[0], "reload")){
             if(!sender.hasPermission("KARaltars.reload")){
                 sender.sendMessage(ChatColor.RED + "you don't have permissions");
                 return;
@@ -24,6 +26,36 @@ public class AltarCommand extends AbstractCommand{
             sender.sendMessage("KARaltars reloaded");
             return;
         }
+
+
+        if(Objects.equals(args[0], "create")){
+            if(!sender.hasPermission("KARaltars.create")){
+                sender.sendMessage(ChatColor.RED + "you don't have permissions");
+                return;
+            }
+            if(args.length==1){
+                sender.sendMessage(label + " " + args[0] + "<name>");
+                return;
+            }
+            sender.sendMessage("Altar " + args[1] + " created");
+            return;
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         sender.sendMessage(ChatColor.RED + "Unknown command: " + args[0]);
     }
 }
