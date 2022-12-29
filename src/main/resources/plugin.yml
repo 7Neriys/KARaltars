@@ -1,0 +1,6 @@
+name: KARaltars
+version: '${project.version}'
+main: remainworlds.com.karaltars.KARaltars
+api-version: 1.19
+authors: [ 7Neriys ]
+description: create own altars
