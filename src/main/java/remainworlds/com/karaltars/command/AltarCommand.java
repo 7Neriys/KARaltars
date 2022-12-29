@@ -38,6 +38,7 @@ public class AltarCommand extends AbstractCommand{
                 return;
             }
             KARaltars.getData().getConfig().set("altars.", args[1]);
+            KARaltars.getData().save();
             sender.sendMessage("Altar " + args[1] + " created");
             return;
 
