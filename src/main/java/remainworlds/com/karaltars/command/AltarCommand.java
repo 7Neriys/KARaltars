@@ -37,12 +37,27 @@ public class AltarCommand extends AbstractCommand{
                 return;
             }
             if(args.length==1){
-                sender.sendMessage(label + " " + args[0] + " <name>");
+                sender.sendMessage(label + " " + args[0] + " <name> <count of blocks>");
                 return;
             }
-            KARaltars.getData().getConfig().set("altars." + args[1], "empty");
+
+            if(args.length==2){
+                sender.sendMessage(label + " " + args[0] + args[1] + " <count of blocks>");
+                return;
+            }
+
+            try {
+                Integer.parseInt(args[2]);
+
+            } catch (NumberFormatException e){
+                sender.sendMessage("Not a number");
+                return;
+            }
+
+
+            KARaltars.getData().getConfig().set("altars." + args[1] + ".count", Integer.parseInt(args[2]));
             KARaltars.getData().save();
-            sender.sendMessage("Altar " + args[1] + " created");
+            sender.sendMessage("Altar " + args[1] + " created. " + args[2] + " blocks ");
             return;
 
         }
@@ -58,27 +73,32 @@ public class AltarCommand extends AbstractCommand{
                 }
 
 
-                // if(((Player) sender).getItemInHand().toString() == "AIR")
+                if(Objects.equals(((Player) sender).getItemInHand().getType().toString(), "AIR")){
+                    sender.sendMessage("Do not AIR");
+                    return;
+                }
 
-                sender.sendMessage(((Player) sender).getItemInHand().toString());
-                KARaltars.getData().getConfig().set("altars." + args[1] + ".block", ((Player) sender).getItemInHand().toString());
-                KARaltars.getData().getConfig().set("altars." + args[1] + ".coord", ((Player) sender).getLocation().toString());
-                KARaltars.getData().save();
-                sender.sendMessage("Block " + args[2] + "for altar" + args[1] + " created");
-                return;
+                int[] l = new int[KARaltars.getData().getConfig().getInt("altars." + args[1] + ".count")];
+
+                sender.sendMessage(String.valueOf(KARaltars.getData().getConfig().getInt("altars." + args[1] + ".count")));
+                for(int i = 0; i< l.length; i++){
+                    if(KARaltars.getData().getConfig().getString("altars." + args[1] + "." + i) == null){
+                        sender.sendMessage(((Player) sender).getItemInHand().getType().toString());
+
+                        KARaltars.getData().getConfig().set("altars." + args[1] + "." + i + ".block", ((Player) sender).getItemInHand().getType().toString());
+                        KARaltars.getData().getConfig().set("altars." + args[1] + "." + i + ".world", ((Player) sender).getLocation().getWorld().getName().toString());
+                        KARaltars.getData().getConfig().set("altars." + args[1] + "." + i + ".coord.x", ((Player) sender).getLocation().getBlockX());
+                        KARaltars.getData().getConfig().set("altars." + args[1] + "." + i + ".coord.y", ((Player) sender).getLocation().getBlockY());
+                        KARaltars.getData().getConfig().set("altars." + args[1] + "." + i + ".coord.z", ((Player) sender).getLocation().getBlockZ());
+                        KARaltars.getData().save();
+                        sender.sendMessage("Block " + ((Player) sender).getItemInHand().getType() + "for altar" + args[1] + " created");
+                        return;
+                    }
+                }
+                sender.sendMessage("max alredy created");
+
 
             }
-
-
-
-
-
-
-
-
-
-
-
 
 
         sender.sendMessage(ChatColor.RED + "Unknown command: " + args[0]);
