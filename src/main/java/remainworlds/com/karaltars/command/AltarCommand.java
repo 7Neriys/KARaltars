@@ -1,7 +1,10 @@
 package remainworlds.com.karaltars.command;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import remainworlds.com.karaltars.KARaltars;
 
 import java.util.Objects;
@@ -43,29 +46,28 @@ public class AltarCommand extends AbstractCommand{
             return;
 
         }
-        if(Objects.equals(args[0], "addblock")){
-            if(!sender.hasPermission("KARaltars.addblock")){
-                sender.sendMessage(ChatColor.RED + "you don't have permissions");
+        if(Objects.equals(args[0], "addblock")) {
+
+                if (!sender.hasPermission("KARaltars.addblock")) {
+                    sender.sendMessage(ChatColor.RED + "you don't have permissions");
+                    return;
+                }
+                if (args.length == 1) {
+                    sender.sendMessage(label + " " + args[0] + " <altar name>");
+                    return;
+                }
+
+
+                // if(((Player) sender).getItemInHand().toString() == "AIR")
+
+                sender.sendMessage(((Player) sender).getItemInHand().toString());
+                KARaltars.getData().getConfig().set("altars." + args[1] + ".block", ((Player) sender).getItemInHand().toString());
+                KARaltars.getData().getConfig().set("altars." + args[1] + ".coord", ((Player) sender).getLocation().toString());
+                KARaltars.getData().save();
+                sender.sendMessage("Block " + args[2] + "for altar" + args[1] + " created");
                 return;
+
             }
-            if(args.length==1){
-                sender.sendMessage(label + " " + args[0] + " <altar name> <block name> <x> <y> <z>");
-                return;
-            }
-            if(args.length==2){
-                sender.sendMessage(label + " " + args[0] + args[1] + " <block name> <x> <y> <z>");
-                return;
-            }
-            KARaltars.getData().getConfig().set("altars."+ args[1] + ".block", args[2]);
-            KARaltars.getData().getConfig().set("altars."+ args[1] + ".coord", args[3] + ", " + args[4] + ", " + args[5]);
-            KARaltars.getData().save();
-            sender.sendMessage("Block " + args[2] + "for altar"+ args[1] + " created");
-            return;
-
-        }
-
-
-
 
 
 
