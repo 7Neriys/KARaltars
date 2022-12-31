@@ -11,3 +11,5 @@
 `/altars addblock <altar name>` - добавит блок в алтарь который вы держите в руках
 
 `/altars listblocks <altar name>` - список всех добавленых блоков в алтаре
+
+`/altars removeblock <altar name> <block id>` - удоляет блок для алтаря

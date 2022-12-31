@@ -101,7 +101,7 @@ public class AltarCommand extends AbstractCommand{
             }
         if(Objects.equals(args[0], "listblocks")) {
 
-            if (!sender.hasPermission("KARaltars.addblock")) {
+            if (!sender.hasPermission("KARaltars.listblocks")) {
                 sender.sendMessage(ChatColor.RED + "you don't have permissions");
                 return;
             }
@@ -127,6 +127,42 @@ public class AltarCommand extends AbstractCommand{
                     sender.sendMessage(i + ": none");
                 }
             }
+            return;
+        }
+        if(Objects.equals(args[0], "removeblock")) {
+
+            if (!sender.hasPermission("KARaltars.removeblock")) {
+                sender.sendMessage(ChatColor.RED + "you don't have permissions");
+                return;
+            }
+            if (args.length == 1) {
+                sender.sendMessage(label + " " + args[0] + " <altar name> <number of block>");
+                return;
+            }
+            if (args.length == 2) {
+                sender.sendMessage(label + " " + args[0] +" " +args[1] + " <number of block>");
+                return;
+            }
+            try {
+                Integer.parseInt(args[2]);
+
+            } catch (NumberFormatException e){
+                sender.sendMessage("Not a number");
+                return;
+            }
+
+            int[] l = new int[KARaltars.getData().getConfig().getInt("altars." + args[1] + ".count")];
+            for(int i = 0; i< l.length; i++){
+                if(i == Integer.parseInt(args[2]) && KARaltars.getData().getConfig().getString("altars." + args[1] + "." + i) != null){
+
+                    KARaltars.getData().getConfig().set("altars." + args[1] + "." + i, null);
+                    KARaltars.getData().save();
+                    sender.sendMessage("block "+i+ "deleted");
+                    return;
+
+                }
+            }
+            sender.sendMessage("Unknown block");
             return;
         }
 
