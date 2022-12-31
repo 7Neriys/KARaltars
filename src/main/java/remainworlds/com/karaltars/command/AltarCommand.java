@@ -79,19 +79,19 @@ public class AltarCommand extends AbstractCommand{
                 }
 
                 int[] l = new int[KARaltars.getData().getConfig().getInt("altars." + args[1] + ".count")];
-
-                sender.sendMessage(String.valueOf(KARaltars.getData().getConfig().getInt("altars." + args[1] + ".count")));
                 for(int i = 0; i< l.length; i++){
                     if(KARaltars.getData().getConfig().getString("altars." + args[1] + "." + i) == null){
-                        sender.sendMessage(((Player) sender).getItemInHand().getType().toString());
 
                         KARaltars.getData().getConfig().set("altars." + args[1] + "." + i + ".block", ((Player) sender).getItemInHand().getType().toString());
                         KARaltars.getData().getConfig().set("altars." + args[1] + "." + i + ".world", ((Player) sender).getLocation().getWorld().getName().toString());
                         KARaltars.getData().getConfig().set("altars." + args[1] + "." + i + ".coord.x", ((Player) sender).getLocation().getBlockX());
                         KARaltars.getData().getConfig().set("altars." + args[1] + "." + i + ".coord.y", ((Player) sender).getLocation().getBlockY());
                         KARaltars.getData().getConfig().set("altars." + args[1] + "." + i + ".coord.z", ((Player) sender).getLocation().getBlockZ());
+                        KARaltars.getData().getConfig().set("altars." + args[1] + "." + i + ".command", "");
+                        KARaltars.getData().getConfig().set("altars." + args[1] + "." + i + ".particle.true", "");
+                        KARaltars.getData().getConfig().set("altars." + args[1] + "." + i + ".particle.false", "");
                         KARaltars.getData().save();
-                        sender.sendMessage("Block " + ((Player) sender).getItemInHand().getType() + "for altar" + args[1] + " created");
+                        sender.sendMessage("Block " + ((Player) sender).getItemInHand().getType() + " for altar " + args[1] + " created");
                         return;
                     }
                 }
@@ -99,6 +99,36 @@ public class AltarCommand extends AbstractCommand{
 
 
             }
+        if(Objects.equals(args[0], "listblocks")) {
+
+            if (!sender.hasPermission("KARaltars.addblock")) {
+                sender.sendMessage(ChatColor.RED + "you don't have permissions");
+                return;
+            }
+            if (args.length == 1) {
+                sender.sendMessage(label + " " + args[0] + " <altar name>");
+                return;
+            }
+
+            int[] l = new int[KARaltars.getData().getConfig().getInt("altars." + args[1] + ".count")];
+            for(int i = 0; i< l.length; i++){
+                if(KARaltars.getData().getConfig().getString("altars." + args[1] + "." + i) != null){
+
+
+                    sender.sendMessage(i + ": " + KARaltars.getData().getConfig().getString("altars." + args[1] + "." + i + ".block"));
+                    sender.sendMessage("world: " + KARaltars.getData().getConfig().getString("altars." + args[1] + "." + i + ".world"));
+                    sender.sendMessage("cords: " + KARaltars.getData().getConfig().getString("altars." + args[1] + "." + i + ".coord.x") + " " + KARaltars.getData().getConfig().getString("altars." + args[1] + "." + i + ".coord.y") + " " + KARaltars.getData().getConfig().getString("altars." + args[1] + "." + i + ".coord.z"));
+                    sender.sendMessage("command: " + KARaltars.getData().getConfig().getString("altars." + args[1] + "." + i + ".command"));
+                    sender.sendMessage("particle true: " + KARaltars.getData().getConfig().getString("altars." + args[1] + "." + i + ".particle.true"));
+                    sender.sendMessage("particle false: " + KARaltars.getData().getConfig().getString("altars." + args[1] + "." + i + ".particle.false"));
+
+                }
+                else {
+                    sender.sendMessage(i + ": none");
+                }
+            }
+            return;
+        }
 
 
         sender.sendMessage(ChatColor.RED + "Unknown command: " + args[0]);

@@ -20,7 +20,11 @@ public final class KARaltars extends JavaPlugin {
 
         saveDefaultConfig();
         date = new ListAltars("altars.yml");
+
+
+
     }
+
 
     @Override
     public void onDisable() {
