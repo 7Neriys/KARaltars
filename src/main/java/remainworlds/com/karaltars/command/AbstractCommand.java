@@ -9,11 +9,16 @@ import remainworlds.com.karaltars.KARaltars;
 
 public abstract class AbstractCommand implements CommandExecutor {
 
+
     public AbstractCommand(String command) {
         PluginCommand pluginCommand = KARaltars.getInstance().getCommand(command);
         if(pluginCommand != null) {
             pluginCommand.setExecutor(this);
         }
+
+
+
+
     }
 
     public abstract void  execute(CommandSender sender, String label, String[] args);
