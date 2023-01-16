@@ -6,11 +6,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import remainworlds.com.karaltars.SQLite.Database;
+import remainworlds.com.karaltars.SQLite.SQLite;
 import remainworlds.com.karaltars.command.AltarCommand;
 
 public final class KARaltars extends JavaPlugin {
 
-
+    private Database db;
     private static KARaltars instance;
     private ListAltars date;
     @Override
@@ -21,8 +23,12 @@ public final class KARaltars extends JavaPlugin {
         saveDefaultConfig();
         date = new ListAltars("altars.yml");
 
+        this.db = new SQLite(this);
+        this.db.load();
 
-
+    }
+    public Database getRDatabase() {
+        return this.db;
     }
 
 
