@@ -1,35 +1,49 @@
 package remainworlds.com.karaltars;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import remainworlds.com.karaltars.command.AltarCommand;
+import remainworlds.com.karaltars.command.AddBlockToAltar;
+import remainworlds.com.karaltars.command.CommandReload;
+import remainworlds.com.karaltars.command.CreateAltar;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 public final class KARaltars extends JavaPlugin {
-    Logger log = Logger.getLogger("Minecraft");
-    private Database db;
+
     private static KARaltars instance;
-    private ListAltars date;
+    Logger log = Logger.getLogger("Minecraft");
+
     @Override
     public void onEnable() {
-
-
-       instance = this;
-       new AltarCommand();
-
-        saveDefaultConfig();
-        date = new ListAltars("altars.yml");
+        instance = this;
 
         File file = new File("plugins/KARaltars");
-        boolean flag = file.mkdir();
-        if(flag) log.info("Folder had been created");
-        else log.info("Folder hadn't been created");
+        file.mkdir();
 
 
-    }
-    public Database getRDatabase() {
-        return this.db;
+
+        File config = new File("plugins/KARaltars/config.yml");
+        if(!config.exists()){
+            getConfig().options().copyDefaults(true);
+            saveDefaultConfig();
+        }
+
+        File altarsFile = new File("plugins/KARaltars/altars.yml");
+        if(!altarsFile.exists()){
+            try {
+                altarsFile.createNewFile();
+
+            }
+            catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+
+        getCommand("altarreload").setExecutor(new CommandReload(this));
+        getCommand("createaltar").setExecutor(new CreateAltar(this));
+        getCommand("addaltarblock").setExecutor(new AddBlockToAltar(this));
+
     }
 
 
@@ -40,7 +54,5 @@ public final class KARaltars extends JavaPlugin {
     public static KARaltars getInstance(){
         return instance;
     }
-    public static ListAltars getData(){
-        return instance.date;
-    }
+
 }

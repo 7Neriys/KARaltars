@@ -5,4 +5,11 @@ api-version: 1.19
 authors: [ 7Neriys ]
 description: create own altars
 commands:
-  altars: {}
+  altarreload:
+    description: Reload config
+    usage: /altarreload
+    aliases: [alreload]
+  createaltar:
+    usage: /createaltar <altarname> <count of blocks>
+  addaltarblock:
+    usage: /addaltarblock <altarname>

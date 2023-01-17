@@ -9,13 +9,13 @@ import java.sql.Statement;
 public class AltarsDB {
     private String url;
     public AltarsDB() throws Exception{
-        url = "jdbc::sqlite:plugins/KARaltars/Altars.db";
+        url = "jdbc:sqlite:plugins/KARaltars/altars.db";
         Class.forName("org.sqlite.JDBC").newInstance();
 
         Connection c = getConnection();
         Statement s = c.createStatement();
 
-        s.executeUpdate("CREATE TABLE IF NOT EXISTS users ('nickname' TEXT, 'date' TEXT)");
+        s.executeUpdate("CREATE TABLE IF NOT EXISTS altars ('nickname' TEXT, 'date' TEXT);");
 
         s.close();
         c.close();
@@ -30,7 +30,7 @@ public class AltarsDB {
         try {
             Connection c = this.getConnection();
             Statement s = c.createStatement();
-            s.executeUpdate("INSERT INTO users VALUES ('" + nickname + "', '" + date + "')");
+            s.executeUpdate("INSERT INTO altars VALUES ('" + nickname + "', '" + date + "')");
             s.close();
             c.close();
 
@@ -44,7 +44,7 @@ public class AltarsDB {
         try {
             Connection c = this.getConnection();
             Statement s = c.createStatement();
-            ResultSet result = c.createStatement().executeQuery("SELECT COUNT(date) FROM users WHERE nickname = '" + nickname + "'");
+            ResultSet result = c.createStatement().executeQuery("SELECT COUNT(date) FROM altars WHERE nickname = '" + nickname + "'");
             int temp = result.getInt(1);
             s.close();
             c.close();
@@ -60,7 +60,7 @@ public class AltarsDB {
             Connection c = this.getConnection();
             Statement s = c.createStatement();
 
-            s.executeUpdate("DELETE FROM users WHERE nickname = '" + nickname + "'");
+            s.executeUpdate("DELETE FROM altars WHERE nickname = '" + nickname + "'");
             s.close();
             c.close();
 

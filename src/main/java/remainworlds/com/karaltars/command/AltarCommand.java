@@ -1,4 +1,4 @@
-package remainworlds.com.karaltars.command;
+/*package remainworlds.com.karaltars.command;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -170,3 +170,4 @@ public class AltarCommand extends AbstractCommand{
         sender.sendMessage(ChatColor.RED + "Unknown command: " + args[0]);
     }
 }
+*/

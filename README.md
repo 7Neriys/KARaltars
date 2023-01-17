@@ -6,10 +6,12 @@
 
 <h3>Команды:</h3>
 
-`/altars create <altar name> <count of blocks>` - создаст алтарь
+`/altarreload` - перезагрузка конфига плагина
 
-`/altars addblock <altar name>` - добавит блок в алтарь который вы держите в руках
+`/createaltar <altar name> <count of blocks>` - создаст алтарь
 
-`/altars listblocks <altar name>` - список всех добавленых блоков в алтаре
+`/addaltarblock <altar name>` - добавит блок в алтарь который вы держите в руках
 
-`/altars removeblock <altar name> <block id>` - удоляет блок для алтаря
+`/altars listblocks <altar name>` - список всех добавленых блоков в алтаре *- удалено*
+
+`/altars removeblock <altar name> <block id>` - удоляет блок для алтаря *- удалено*
