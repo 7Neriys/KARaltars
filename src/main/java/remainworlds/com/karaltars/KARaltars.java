@@ -1,5 +1,6 @@
 package remainworlds.com.karaltars;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import remainworlds.com.karaltars.command.AddBlockToAltar;
 import remainworlds.com.karaltars.command.CommandReload;
@@ -16,6 +17,8 @@ public final class KARaltars extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        Bukkit.getPluginManager().registerEvents(new EventsChecker(this), this);
+
         instance = this;
 
         File file = new File("plugins/KARaltars");
@@ -43,6 +46,7 @@ public final class KARaltars extends JavaPlugin {
         getCommand("altarreload").setExecutor(new CommandReload(this));
         getCommand("createaltar").setExecutor(new CreateAltar(this));
         getCommand("addaltarblock").setExecutor(new AddBlockToAltar(this));
+
 
     }
 

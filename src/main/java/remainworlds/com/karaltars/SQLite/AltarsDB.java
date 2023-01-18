@@ -15,7 +15,7 @@ public class AltarsDB {
         Connection c = getConnection();
         Statement s = c.createStatement();
 
-        s.executeUpdate("CREATE TABLE IF NOT EXISTS altars ('nickname' TEXT, 'date' TEXT);");
+        s.executeUpdate("CREATE TABLE IF NOT EXISTS altars ('altarName' TEXT, 'blockID' INTEGER, 'block' TEXT, 'world' TEXT, 'x' TEXT, 'y' TEXT, 'z' TEXT);");
 
         s.close();
         c.close();
@@ -26,11 +26,11 @@ public class AltarsDB {
         return DriverManager.getConnection(url);
     }
 
-    public  void add(String nickname, String date){
+    public  void add(String altarName, int blockID, String block, String world, int x, int y, int z){
         try {
             Connection c = this.getConnection();
             Statement s = c.createStatement();
-            s.executeUpdate("INSERT INTO altars VALUES ('" + nickname + "', '" + date + "')");
+            s.executeUpdate("INSERT INTO altars VALUES ('" + altarName + "', '" + blockID + "', '" + block + "', '" + world + "', '" + x + "', '" + y + "', '" + z + "')");
             s.close();
             c.close();
 
@@ -40,7 +40,7 @@ public class AltarsDB {
 
         }
     }
-    public  int count(String nickname){
+    public int xyz(String nickname){
         try {
             Connection c = this.getConnection();
             Statement s = c.createStatement();

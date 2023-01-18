@@ -4,3 +4,4 @@ messages:
     config_reloaded: "&aconfig reloaded"
     Altar_created: "&aaltar {name} has been created with {count} blocks"
     Altar_not_be: "no has altar {name}"
+    altars_yml_reloaded: "&aaltars.yml reloaded"

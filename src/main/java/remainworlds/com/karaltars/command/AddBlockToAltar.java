@@ -17,7 +17,6 @@ import java.util.Objects;
 
 public class AddBlockToAltar implements CommandExecutor {
 
-    FileConfiguration altars = YamlConfiguration.loadConfiguration(new File("plugins/KARaltars/altars.yml"));
 
     private AltarsDB db;
     private KARaltars plugin;
@@ -35,14 +34,18 @@ public class AddBlockToAltar implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
+
+
         if (!sender.hasPermission("KARaltars.addblocktoaltar")) {
             sender.sendMessage(plugin.getConfig().getString("messages.commands.dont_have_permissions").replace("&", "§"));
             return true;
         }
+        File file = new File("plugins/KARaltars/altars.yml");
+
+        FileConfiguration altars = YamlConfiguration.loadConfiguration(file);
         if (args.length < 1) {
             return false;
         }
-
         if(altars.get("altars." + args[0]) == null){
             sender.sendMessage(plugin.getConfig().getString("messages.commands.Altar_not_be").replace("&", "§").replace("{name}", args[0]));
             return true;
@@ -53,12 +56,16 @@ public class AddBlockToAltar implements CommandExecutor {
             sender.sendMessage("Do not AIR");
             return true;
         }
-        sender.sendMessage(Objects.requireNonNull(altars.getString("altars." + args[0] + ".count")));
+
         int[] l = new int[ altars.getInt("altars." + args[0] + ".count")];
         for(int i = 0; i< l.length; i++){
             if(altars.getString("altars." + args[0] + "." + i) == null){
+                int[] xyz = new int[3];
+                xyz[0] = ((Player) sender).getLocation().getBlockX();
+                xyz[1] = ((Player) sender).getLocation().getBlockY();
+                xyz[2] = ((Player) sender).getLocation().getBlockZ();
 
-                db.add(sender.getName(), ((Player) sender).getItemInHand().getType().toString());
+                db.add(args[0], i, ((Player) sender).getItemInHand().getType().toString(), ((Player) sender).getLocation().getWorld().getName().toString(),xyz[0],xyz[1],xyz[2]);
 
                 altars.set("altars." + args[0] + "." + i + ".block", ((Player) sender).getItemInHand().getType().toString());
                 altars.set("altars." + args[0] + "." + i + ".world", ((Player) sender).getLocation().getWorld().getName().toString());
@@ -69,7 +76,7 @@ public class AddBlockToAltar implements CommandExecutor {
                 altars.set("altars." + args[0] + "." + i + ".particle.true", "");
                 altars.set("altars." + args[0] + "." + i + ".particle.false", "");
                 try{
-                    altars.save(new File("plugins/KARaltars/altars.yml"));
+                    altars.save(file);
                 }
                 catch (IOException e1){
                     e1.printStackTrace();

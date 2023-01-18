@@ -13,7 +13,6 @@ import java.io.IOException;
 
 public class CreateAltar implements CommandExecutor {
 
-    FileConfiguration altars = YamlConfiguration.loadConfiguration(new File("plugins/KARaltars/altars.yml"));
     private KARaltars plugin;
 
     public CreateAltar(KARaltars plugin){
@@ -25,6 +24,8 @@ public class CreateAltar implements CommandExecutor {
             sender.sendMessage(plugin.getConfig().getString("messages.commands.dont_have_permissions").replace("&", "§"));
             return true;
         }
+        File file = new File("plugins/KARaltars/altars.yml");
+        FileConfiguration altars = YamlConfiguration.loadConfiguration(file);
         if(args.length < 2) return false;
 
 
@@ -39,7 +40,7 @@ public class CreateAltar implements CommandExecutor {
 
         altars.set("altars." + args[0] + ".count", Integer.parseInt(args[1]));
         try{
-            altars.save(new File("plugins/KARaltars/altars.yml"));
+            altars.save(file);
         }
         catch (IOException e1){
             e1.printStackTrace();
