@@ -33,10 +33,14 @@ public class EventsChecker implements Listener {
         Player player = event.getPlayer();
 
         Location b_loc = block.getLocation();
-        int[] xyz = new int[3];
-        xyz[0] = b_loc.getBlockX();
-        xyz[1] = b_loc.getBlockY();
-        xyz[2] = b_loc.getBlockZ();
+        String xyz = b_loc.getBlockX() + "; " + b_loc.getBlockY() + "; " + b_loc.getBlockZ()+";";
+
+
+        if(db.Find_block(block.getType().toString(), xyz)){
+            player.sendMessage("Это тот блок!");
+
+        }
+        else player.sendMessage("хуйня блок");
 
         player.sendMessage("Block: " + block.getType());
         player.sendMessage("B_loc: x = " + b_loc.getBlockX() + "; y = " + b_loc.getBlockY() + "; z = " + b_loc.getBlockZ());

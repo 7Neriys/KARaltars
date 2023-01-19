@@ -5,8 +5,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Objects;
+import java.util.logging.Logger;
 
 public class AltarsDB {
+    Logger log = Logger.getLogger("Minecraft");
     private String url;
     public AltarsDB() throws Exception{
         url = "jdbc:sqlite:plugins/KARaltars/altars.db";
@@ -15,7 +18,7 @@ public class AltarsDB {
         Connection c = getConnection();
         Statement s = c.createStatement();
 
-        s.executeUpdate("CREATE TABLE IF NOT EXISTS altars ('altarName' TEXT, 'blockID' INTEGER, 'block' TEXT, 'world' TEXT, 'x' TEXT, 'y' TEXT, 'z' TEXT);");
+        s.executeUpdate("CREATE TABLE IF NOT EXISTS altars ('altarName' TEXT, 'blockID' INTEGER, 'block' TEXT, 'world' TEXT, 'xyz' TEXT);");
 
         s.close();
         c.close();
@@ -26,11 +29,11 @@ public class AltarsDB {
         return DriverManager.getConnection(url);
     }
 
-    public  void add(String altarName, int blockID, String block, String world, int x, int y, int z){
+    public  void add(String altarName, int blockID, String block, String world, String xyz){
         try {
             Connection c = this.getConnection();
             Statement s = c.createStatement();
-            s.executeUpdate("INSERT INTO altars VALUES ('" + altarName + "', '" + blockID + "', '" + block + "', '" + world + "', '" + x + "', '" + y + "', '" + z + "')");
+            s.executeUpdate("INSERT INTO altars VALUES ('" + altarName + "', '" + blockID + "', '" + block + "', '" + world + "', '" + xyz + "')");
             s.close();
             c.close();
 
@@ -40,19 +43,24 @@ public class AltarsDB {
 
         }
     }
-    public int xyz(String nickname){
+    public boolean Find_block(String block, String xyz){
         try {
             Connection c = this.getConnection();
             Statement s = c.createStatement();
-            ResultSet result = c.createStatement().executeQuery("SELECT COUNT(date) FROM altars WHERE nickname = '" + nickname + "'");
-            int temp = result.getInt(1);
-            s.close();
-            c.close();
-            return temp;
+            ResultSet result = c.createStatement().executeQuery("SELECT * FROM altars WHERE xyz = '" + xyz + "';");
+            if(result.isClosed())
+                return false;
+
+            if(Objects.equals(result.getString(3), block)){
+                s.close();
+                c.close();
+                return true;
+            }
+            return false;
         }
         catch (Exception e){
             e.printStackTrace();
-            return 0;
+            return false;
         }
     }
     public  void remove(String nickname){

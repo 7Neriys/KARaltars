@@ -60,12 +60,9 @@ public class AddBlockToAltar implements CommandExecutor {
         int[] l = new int[ altars.getInt("altars." + args[0] + ".count")];
         for(int i = 0; i< l.length; i++){
             if(altars.getString("altars." + args[0] + "." + i) == null){
-                int[] xyz = new int[3];
-                xyz[0] = ((Player) sender).getLocation().getBlockX();
-                xyz[1] = ((Player) sender).getLocation().getBlockY();
-                xyz[2] = ((Player) sender).getLocation().getBlockZ();
+                String xyz = ((Player) sender).getLocation().getBlockX() + "; " + ((Player) sender).getLocation().getBlockY() + "; " + ((Player) sender).getLocation().getBlockZ()+";";
 
-                db.add(args[0], i, ((Player) sender).getItemInHand().getType().toString(), ((Player) sender).getLocation().getWorld().getName().toString(),xyz[0],xyz[1],xyz[2]);
+                db.add(args[0], i, ((Player) sender).getItemInHand().getType().toString(), ((Player) sender).getLocation().getWorld().getName().toString(),xyz);
 
                 altars.set("altars." + args[0] + "." + i + ".block", ((Player) sender).getItemInHand().getType().toString());
                 altars.set("altars." + args[0] + "." + i + ".world", ((Player) sender).getLocation().getWorld().getName().toString());
