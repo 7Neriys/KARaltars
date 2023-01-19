@@ -48,8 +48,12 @@ public class AltarsDB {
             Connection c = this.getConnection();
             Statement s = c.createStatement();
             ResultSet result = c.createStatement().executeQuery("SELECT * FROM altars WHERE xyz = '" + xyz + "';");
-            if(result.isClosed())
+            if(result.isClosed()){
+                s.close();
+                c.close();
                 return false;
+            }
+
 
             if(Objects.equals(result.getString(3), block)){
                 s.close();
