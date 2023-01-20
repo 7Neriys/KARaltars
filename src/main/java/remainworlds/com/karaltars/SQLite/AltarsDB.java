@@ -36,14 +36,13 @@ public class AltarsDB {
             s.executeUpdate("INSERT INTO altars VALUES ('" + altarName + "', '" + blockID + "', '" + block + "', '" + world + "', '" + xyz + "')");
             s.close();
             c.close();
-
         }
         catch (Exception e){
             e.printStackTrace();
 
         }
     }
-    public boolean Find_block(String block, String xyz){
+    public String Find_block(String block, String xyz){
         try {
             Connection c = this.getConnection();
             Statement s = c.createStatement();
@@ -51,20 +50,27 @@ public class AltarsDB {
             if(result.isClosed()){
                 s.close();
                 c.close();
-                return false;
+                return null;
             }
 
 
             if(Objects.equals(result.getString(3), block)){
+
+
+                String R = result.getString(1) + "; " + result.getString(2);
+
                 s.close();
                 c.close();
-                return true;
+                return R;
             }
-            return false;
+            String R = result.getString(1) + "; " + result.getString(2);
+            s.close();
+            c.close();
+            return "NOT; " + R;
         }
         catch (Exception e){
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
     public  void remove(String nickname){

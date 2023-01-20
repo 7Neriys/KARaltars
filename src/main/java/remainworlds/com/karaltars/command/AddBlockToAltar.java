@@ -13,6 +13,8 @@ import remainworlds.com.karaltars.SQLite.AltarsDB;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class AddBlockToAltar implements CommandExecutor {
@@ -69,9 +71,13 @@ public class AddBlockToAltar implements CommandExecutor {
                 altars.set("altars." + args[0] + "." + i + ".coord.x", ((Player) sender).getLocation().getBlockX());
                 altars.set("altars." + args[0] + "." + i + ".coord.y", ((Player) sender).getLocation().getBlockY());
                 altars.set("altars." + args[0] + "." + i + ".coord.z", ((Player) sender).getLocation().getBlockZ());
-                altars.set("altars." + args[0] + "." + i + ".command", "");
-                altars.set("altars." + args[0] + "." + i + ".particle.true", "");
-                altars.set("altars." + args[0] + "." + i + ".particle.false", "");
+                altars.set("altars." + args[0] + "." + i + ".commands", new ArrayList<String>());
+                altars.set("altars." + args[0] + "." + i + ".activated", false);
+                List<String> message = new ArrayList<>();
+                altars.set("messages." + xyz + ".Altar_Name", args[0]);
+                altars.set("messages." + xyz + ".Block_Name", ((Player) sender).getItemInHand().getType().toString());
+                altars.set("messages." + xyz + ".riddle", message);
+
                 try{
                     altars.save(file);
                 }
