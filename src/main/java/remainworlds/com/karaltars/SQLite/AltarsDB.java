@@ -42,16 +42,17 @@ public class AltarsDB {
 
         }
     }
-    public String Find_block(String block, String xyz){
+    public String Find_block(String block, String xyz, String world){
         try {
             Connection c = this.getConnection();
             Statement s = c.createStatement();
-            ResultSet result = c.createStatement().executeQuery("SELECT * FROM altars WHERE xyz = '" + xyz + "';");
+            ResultSet result = c.createStatement().executeQuery("SELECT * FROM altars WHERE xyz = '" + xyz + "' AND world = '" + world + "';");
             if(result.isClosed()){
                 s.close();
                 c.close();
                 return null;
             }
+
 
 
             if(Objects.equals(result.getString(3), block)){
@@ -73,12 +74,12 @@ public class AltarsDB {
             return null;
         }
     }
-    public  void remove(String nickname){
+    public void removeAltar(String altarName){
         try {
             Connection c = this.getConnection();
             Statement s = c.createStatement();
+            s.executeUpdate("DELETE FROM altars WHERE altarName = '" + altarName + "'");
 
-            s.executeUpdate("DELETE FROM altars WHERE nickname = '" + nickname + "'");
             s.close();
             c.close();
 
@@ -87,5 +88,20 @@ public class AltarsDB {
             e.printStackTrace();
 
         }
+        //s.executeUpdate("DELETE FROM altars WHERE nickname = '" + nickname + "'");
+    }
+    public void clearBD(){
+
+        try {
+            Connection c = this.getConnection();
+            Statement s = c.createStatement();
+            s.executeUpdate("delete from altars");
+            s.close();
+            c.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

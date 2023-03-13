@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import remainworlds.com.karaltars.command.AddBlockToAltar;
 import remainworlds.com.karaltars.command.CommandReload;
 import remainworlds.com.karaltars.command.CreateAltar;
+import remainworlds.com.karaltars.command.DeleteAltar;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,6 +47,7 @@ public final class KARaltars extends JavaPlugin {
         getCommand("altarreload").setExecutor(new CommandReload(this));
         getCommand("createaltar").setExecutor(new CreateAltar(this));
         getCommand("addaltarblock").setExecutor(new AddBlockToAltar(this));
+        getCommand("DeleteAltar").setExecutor(new DeleteAltar(this));
 
 
     }

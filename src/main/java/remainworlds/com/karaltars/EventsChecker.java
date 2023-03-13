@@ -41,9 +41,10 @@ public class EventsChecker implements Listener {
         Player player = event.getPlayer();
 
         Location b_loc = block.getLocation();
+        String world = block.getWorld().getName();
         String xyz = b_loc.getBlockX() + "; " + b_loc.getBlockY() + "; " + b_loc.getBlockZ()+";";
-
-        String result = db.Find_block(block.getType().toString(), xyz);
+        // String resultWorld = db.Find_block(block.getType().toString(), xyz);
+        String result = db.Find_block(block.getType().toString(), xyz, world);
         String error = null;
         if(result != null){
             String[] arr = result.split("; ");
@@ -99,6 +100,16 @@ public class EventsChecker implements Listener {
                 if(active){
                     b_loc.getBlock().setType(Material.BEDROCK);
                     block.getWorld().strikeLightningEffect(b_loc);
+                    List<String> commands = altars.getStringList("altars." + altar_name + "." + BlockID + ".commands");
+                    if(!commands.isEmpty()){
+                        for(String cmd : commands){
+
+                            String sendcmd = cmd.replace(
+                                            "{player}", player.getName())
+                                    .replace("{altarName}", altar_name);
+                            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), sendcmd);
+                        }
+                    }
                 }
             }
             else{
@@ -109,7 +120,11 @@ public class EventsChecker implements Listener {
                     List<String> commands = altars.getStringList("altars." + altar_name + "." + BlockID + ".commands");
                     if(!commands.isEmpty()){
                         for(String cmd : commands){
-                            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), cmd);
+
+                            String sendcmd = cmd.replace(
+                                    "{player}", player.getName())
+                                    .replace("{altarName}", altar_name);
+                            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), sendcmd);
                         }
                     }
 
