@@ -6,11 +6,13 @@
 
 <h3>Команды:</h3>
 
-`/altarreload` - перезагрузка конфига плагина
+`/altarreload` - перезагрузка конфигов плагина
 
 `/createaltar <altar name> <count of blocks>` - создаст алтарь
 
 `/addaltarblock <altar name>` - добавит блок в алтарь который вы держите в руках
+
+`/deletealtar <altar name>` - удалить алтарь
 
 
 <h2>altars.yml</h2>
