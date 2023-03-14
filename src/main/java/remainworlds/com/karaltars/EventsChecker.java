@@ -9,7 +9,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import remainworlds.com.karaltars.SQLite.AltarsDB;
 
 import java.io.File;
@@ -48,7 +50,7 @@ public class EventsChecker implements Listener {
         String error = null;
         if(result != null){
             String[] arr = result.split("; ");
-            error = arr[0];
+            error = arr[4];
         }
 
         if(Objects.equals(error, "NOT")){
@@ -59,8 +61,8 @@ public class EventsChecker implements Listener {
             String[] arr = result.split("; ");
 
 
-            String altar_name = arr[1];
-            int BlockID = Integer.parseInt(arr[2]);
+            String altar_name = arr[0];
+            int BlockID = Integer.parseInt(arr[1]);
 
 
             List<String> message = altars.getStringList("messages." + xyz + ".riddle");
@@ -114,6 +116,12 @@ public class EventsChecker implements Listener {
             }
             else{
                 if(!altars.getBoolean("altars." + altar_name + "." + BlockID + ".activated")) {
+                    if(!Objects.equals(arr[2], "none")){
+                        block.getWorld().strikeLightningEffect(b_loc);
+                        player.sendMessage("Нужный блок установлен, осталось его активировать");
+                        return;
+                    }
+
                     b_loc.getBlock().setType(Material.BEDROCK);
                     block.getWorld().strikeLightningEffect(b_loc);
 
@@ -143,4 +151,69 @@ public class EventsChecker implements Listener {
 
     }
 
+    @EventHandler
+    public void onBlockClick(PlayerInteractEvent e){
+        if(e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if(e.getPlayer().getItemInHand().getType() == Material.AIR) return;
+        Block block = e.getClickedBlock();
+        Location b_loc = block.getLocation();
+        String xyz = b_loc.getBlockX() + "; " + b_loc.getBlockY() + "; " + b_loc.getBlockZ()+";";
+        String world = b_loc.getWorld().getName();
+
+        String result = db.Find_block(block.getType().toString(), xyz, world);
+
+        if(result == null) return;
+
+        String[] arr = result.split("; ");
+
+        e.getPlayer().sendMessage("Ты кликнул по блоку алтаря!");
+
+        File file = new File("plugins/KARaltars/altars.yml");
+
+        FileConfiguration altars = YamlConfiguration.loadConfiguration(file);
+
+        if(altars.getBoolean("altars." + arr[0] + "." + arr[1] + ".activated")){
+            e.getPlayer().sendMessage("Колонна уже активированна");
+            return;
+        }
+
+        if(Objects.equals(arr[2], "none")) return;
+
+        e.getPlayer().sendMessage(arr[0]);
+        e.getPlayer().sendMessage(arr[1]);
+        e.getPlayer().sendMessage(arr[2]);
+        e.getPlayer().sendMessage(arr[3]);
+
+    //    if(!Objects.equals(arr[2], altars.getString("altars." + arr[0] + "." + arr[1] + ".item"))) return;
+
+        if(!Objects.equals(block.getType().toString(), altars.getString("altars." + arr[0] + "." + arr[1] + ".block"))) return;
+        if(!Objects.equals(e.getPlayer().getItemInHand().getType().toString(), arr[2])) return;
+
+//если нужный итем
+        b_loc.getBlock().setType(Material.BEDROCK);
+        block.getWorld().strikeLightningEffect(b_loc);
+
+        List<String> commands = altars.getStringList("altars." + arr[0] + "." + arr[1] + ".commands");
+        if(!commands.isEmpty()){
+            for(String cmd : commands){
+
+                String sendcmd = cmd.replace(
+                                "{player}", e.getPlayer().getName())
+                        .replace("{altarName}", arr[0]);
+                Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), sendcmd);
+            }
+        }
+
+
+        altars.set("altars." + arr[0] + "." + arr[1] + ".activated", true);
+        try{
+            altars.save(file);
+        }
+        catch (IOException e1){
+            e1.printStackTrace();
+        }
+        e.getPlayer().getItemInHand().add(-1);
+
+
+    }
 }

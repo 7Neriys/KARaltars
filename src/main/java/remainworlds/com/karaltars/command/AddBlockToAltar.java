@@ -64,7 +64,7 @@ public class AddBlockToAltar implements CommandExecutor {
             if(altars.getString("altars." + args[0] + "." + i) == null){
                 String xyz = ((Player) sender).getLocation().getBlockX() + "; " + ((Player) sender).getLocation().getBlockY() + "; " + ((Player) sender).getLocation().getBlockZ()+";";
 
-                db.add(args[0], i, ((Player) sender).getItemInHand().getType().toString(), ((Player) sender).getLocation().getWorld().getName().toString(),xyz);
+                db.add(args[0], i, ((Player) sender).getItemInHand().getType().toString(), ((Player) sender).getLocation().getWorld().getName().toString(),xyz, "none", "none");
 
                 altars.set("altars." + args[0] + "." + i + ".block", ((Player) sender).getItemInHand().getType().toString());
                 altars.set("altars." + args[0] + "." + i + ".world", ((Player) sender).getLocation().getWorld().getName().toString());
@@ -72,6 +72,8 @@ public class AddBlockToAltar implements CommandExecutor {
                 altars.set("altars." + args[0] + "." + i + ".coord.y", ((Player) sender).getLocation().getBlockY());
                 altars.set("altars." + args[0] + "." + i + ".coord.z", ((Player) sender).getLocation().getBlockZ());
                 altars.set("altars." + args[0] + "." + i + ".commands", new ArrayList<String>());
+                altars.set("altars." + args[0] + "." + i + ".item", "none");
+                altars.set("altars." + args[0] + "." + i + ".lore", "none");
                 altars.set("altars." + args[0] + "." + i + ".activated", false);
                 List<String> message = new ArrayList<>();
                 altars.set("messages." + xyz + ".Altar_Name", args[0]);

@@ -54,6 +54,8 @@ public class CommandReload implements CommandExecutor {
             String block;
             String world;
             String XYZ;
+            String item;
+            String lore;
             ConfigurationSection blockid;
             for (String key : sec.getKeys(false)) {
                 blockid = altars.getConfigurationSection("altars." + key);
@@ -66,7 +68,15 @@ public class CommandReload implements CommandExecutor {
                             world = altars.getString("altars." + key + "." + Block_ID + ".world");
                             XYZ = altars.getInt("altars." + key + "." + Block_ID + ".coord.x")  + "; " + altars.getInt("altars." + key + "." + Block_ID + ".coord.y") + "; " + altars.getInt("altars." + key + "." + Block_ID + ".coord.z")+";";
 
-                            db.add(key, Integer.parseInt(Block_ID), block, world, XYZ);
+                            if(!Objects.equals(altars.getString("altars." + key + "." + Block_ID + ".item"), "none")){
+                                item = altars.getString("altars." + key + "." + Block_ID + ".item");
+                                lore = altars.getString("altars." + key + "." + Block_ID + ".lore");
+                            }
+                            else {
+                                item = "none";
+                                lore = "none";
+                            }
+                            db.add(key, Integer.parseInt(Block_ID), block, world, XYZ, item, lore);
                         }
 
                     }

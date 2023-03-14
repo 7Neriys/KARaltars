@@ -18,7 +18,7 @@ public class AltarsDB {
         Connection c = getConnection();
         Statement s = c.createStatement();
 
-        s.executeUpdate("CREATE TABLE IF NOT EXISTS altars ('altarName' TEXT, 'blockID' INTEGER, 'block' TEXT, 'world' TEXT, 'xyz' TEXT);");
+        s.executeUpdate("CREATE TABLE IF NOT EXISTS altars ('altarName' TEXT, 'blockID' INTEGER, 'block' TEXT, 'world' TEXT, 'xyz' TEXT, 'item' TEXT, 'lore' TEXT);");
 
         s.close();
         c.close();
@@ -29,11 +29,11 @@ public class AltarsDB {
         return DriverManager.getConnection(url);
     }
 
-    public  void add(String altarName, int blockID, String block, String world, String xyz){
+    public  void add(String altarName, int blockID, String block, String world, String xyz, String item, String lore){
         try {
             Connection c = this.getConnection();
             Statement s = c.createStatement();
-            s.executeUpdate("INSERT INTO altars VALUES ('" + altarName + "', '" + blockID + "', '" + block + "', '" + world + "', '" + xyz + "')");
+            s.executeUpdate("INSERT INTO altars VALUES ('" + altarName + "', '" + blockID + "', '" + block + "', '" + world + "', '" + xyz + "', '" + item + "', '" + lore + "')");
             s.close();
             c.close();
         }
@@ -58,16 +58,16 @@ public class AltarsDB {
             if(Objects.equals(result.getString(3), block)){
 
 
-                String R = result.getString(1) + "; " + result.getString(2);
+                String R = result.getString(1) + "; " + result.getString(2) + "; " + result.getString(6) + "; " + result.getString(7);
 
                 s.close();
                 c.close();
-                return R;
+                return R + "; yes";
             }
-            String R = result.getString(1) + "; " + result.getString(2);
+            String R = result.getString(1) + "; " + result.getString(2) + "; " + result.getString(6) + "; " + result.getString(7);
             s.close();
             c.close();
-            return "NOT; " + R;
+            return R + "; NOT";
         }
         catch (Exception e){
             e.printStackTrace();
