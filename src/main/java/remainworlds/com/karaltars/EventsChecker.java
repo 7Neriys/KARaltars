@@ -179,15 +179,16 @@ public class EventsChecker implements Listener {
 
         if(Objects.equals(arr[2], "none")) return;
 
-        e.getPlayer().sendMessage(arr[0]);
-        e.getPlayer().sendMessage(arr[1]);
-        e.getPlayer().sendMessage(arr[2]);
-        e.getPlayer().sendMessage(arr[3]);
 
     //    if(!Objects.equals(arr[2], altars.getString("altars." + arr[0] + "." + arr[1] + ".item"))) return;
 
         if(!Objects.equals(block.getType().toString(), altars.getString("altars." + arr[0] + "." + arr[1] + ".block"))) return;
         if(!Objects.equals(e.getPlayer().getItemInHand().getType().toString(), arr[2])) return;
+        if(e.getPlayer().getItemInHand().getLore() == null) return;
+
+
+        if(!Objects.equals(Objects.requireNonNull(e.getPlayer().getItemInHand().getLore()).get(0), arr[3])) return;
+
 
 //если нужный итем
         b_loc.getBlock().setType(Material.BEDROCK);

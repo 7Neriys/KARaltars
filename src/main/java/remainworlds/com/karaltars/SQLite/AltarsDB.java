@@ -42,6 +42,30 @@ public class AltarsDB {
 
         }
     }
+
+
+    public String GetAltarName(String xyz, String world){
+        try {
+            Connection c = this.getConnection();
+            Statement s = c.createStatement();
+            ResultSet result = c.createStatement().executeQuery("SELECT * FROM altars WHERE xyz = '" + xyz + "' AND world = '" + world + "';");
+            if(result.isClosed()){
+                s.close();
+                c.close();
+                return null;
+            }
+
+            String R = result.getString(1) + "; " + result.getString(2);
+            s.close();
+            c.close();
+            return R;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public String Find_block(String block, String xyz, String world){
         try {
             Connection c = this.getConnection();
@@ -89,6 +113,27 @@ public class AltarsDB {
 
         }
         //s.executeUpdate("DELETE FROM altars WHERE nickname = '" + nickname + "'");
+    }
+
+
+
+    public void addItemToAltar(String altarName, String BlockID, String item, String lore){
+        try {
+            Connection c = this.getConnection();
+            Statement s = c.createStatement();
+
+            ResultSet result = c.createStatement().executeQuery("SELECT * FROM altars WHERE altarName = '" + altarName + "' AND blockID = '" + BlockID + "';");
+
+            s.executeUpdate("DELETE FROM altars WHERE altarName = '" + altarName + "' AND blockID = '" + BlockID + "'");
+
+            s.executeUpdate("INSERT INTO altars VALUES ('" + altarName + "', '" + BlockID + "', '" + result.getString(3) + "', '" + result.getString(4) + "', '" + result.getString(5) + "', '" + item + "', '" + lore + "')");
+
+            s.close();
+            c.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
     public void clearBD(){
 

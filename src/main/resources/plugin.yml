@@ -13,5 +13,7 @@ commands:
     usage: /createaltar <altarname> <count of blocks>
   addaltarblock:
     usage: /addaltarblock <altarname>
+  addaltaritem:
+    usage: /addaltaritem
   deletealtar:
     usage: /deletealtar <altarname>

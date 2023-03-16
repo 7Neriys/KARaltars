@@ -4,5 +4,7 @@ messages:
     config_reloaded: "&aconfig reloaded"
     Altar_created: "&aaltar {name} has been created with {count} blocks"
     Altar_not_be: "no has altar {name}"
+    No_altar: "Алтаря с координатами {cords} не существует"
     altars_yml_reloaded: "&aaltars.yml reloaded"
     altar_delete: "altar {name} deleted"
+    Item_added_to_altar: "item {item} has been added to altar {name} with lore '{lore}'"

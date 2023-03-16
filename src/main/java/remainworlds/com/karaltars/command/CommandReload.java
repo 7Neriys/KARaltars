@@ -70,7 +70,7 @@ public class CommandReload implements CommandExecutor {
 
                             if(!Objects.equals(altars.getString("altars." + key + "." + Block_ID + ".item"), "none")){
                                 item = altars.getString("altars." + key + "." + Block_ID + ".item");
-                                lore = altars.getString("altars." + key + "." + Block_ID + ".lore");
+                                lore = Objects.requireNonNull(altars.getString("altars." + key + "." + Block_ID + ".lore")).replace("&", "§");
                             }
                             else {
                                 item = "none";
